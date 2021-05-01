@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Audit.Client.Data.Models.Audit>
+@{
+    ViewData["Title"] = "Home Page";
+    int a = 0;
+}
+<div class="col-md-12 form-group">
+    <fieldset>
+
+        <h4>Create</h4>
+        <form asp-action="Create" method="post">
+            <div class="col-md-12 form-group">
+                <label>نوع</label>
+                <select name="Level" asp-items="Html.GetEnumSelectList<Audit.Client.Data.Enums.AuditLevel>()" class="form-control"></select>
+            </div>
+            <div class="col-md-12 form-group">
+                <label>پیام</label>
+                <textarea name="Message" class="form-control"></textarea>
+            </div>
+            <div class="col-md-12 form-group">
+                <input type="submit" value="Create" />
+            </div>
+        </form>
+    </fieldset>
+</div>
+<div class="col-md-12 form-group">
+    <table class="table table-dark table-sm table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>شناسه</th>
+                <th>کاربر</th>
+                <th>تغییرات</th>
+                <th>نوع</th>
+                <th>تاریخ ایجاد</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(a++)</td>
+                    <td>@item.Id</td>
+                    <td>@item.UserName</td>
+                    <td>
+                        @Html.Raw(string.Join("<br>", item.Messages.Select(p => p.ToString())))
+                    </td>
+                    <td>@item.InsertDateTime.ToLocalTime()</td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">del</a>
+                        <a class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
